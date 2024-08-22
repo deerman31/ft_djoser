@@ -1,0 +1,23 @@
+myvenv
+
+backend/mysite/db.sqlite3
+
+**/__pycache__/**
+
+**/migrations/
+
+.vscode/
+
+
+# Ignore Python cache files
+*.pyc
+
+# Ignore Django-related files and directories
+*.log
+*.mo
+*.po
+
+# Ignore files created by IDEs/editors
+*.pyc
+
+.DS_Store
