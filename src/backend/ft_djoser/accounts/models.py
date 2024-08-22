@@ -5,6 +5,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.core.validators import RegexValidator
 import pyotp
+import os
+from django.conf import settings
 
 class UserManager(BaseUserManager):
     #アカウント登録されるとこの関数がコールされる
@@ -39,6 +41,18 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     name = models.CharField("名前", max_length=15, unique=True, validators=[name_validator])
 
     avatar = models.ImageField(upload_to="avatars/", null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        # 新しいアバターがアップロードされた場合、古いファイルを削除する
+        if self.pk:
+            old_avatar = UserAccount.objects.filter(pk=self.pk).values_list('avatar', flat=True).first()
+            if old_avatar and old_avatar != self.avatar.name:
+                old_avatar_path = os.path.join(settings.MEDIA_ROOT, old_avatar)
+                if os.path.exists(old_avatar_path):
+                    os.remove(old_avatar_path)
+        
+        super().save(*args, **kwargs)
+
 
     otp_secret = models.CharField(max_length=32, blank=True, null=True)  # 長さを32に増やす
     is_2fa_enabled = models.BooleanField(default=False)

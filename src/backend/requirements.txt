@@ -6,7 +6,7 @@
 
 Django==3.2.23
 djangorestframework
-djangorestframework-simplejwt
+#djangorestframework-simplejwt
 PyJWT
 
 psycopg2-binary
