@@ -9,7 +9,7 @@ while ! nc -z $POSTGRES_HOST $POSTGRES_PORT; do
 done
 echo "PostgreSQL started"
 
-python3 ft_djoser/manage.py makemigrations
+python3 ft_djoser/manage.py makemigrations accounts
 
 # データベースマイグレーションを実行
 python3 ft_djoser/manage.py migrate
